@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Panduan Makro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet" />
+    <style>
+      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]), a.btn { min-height: 2.75rem; }
+      * { box-sizing: border-box; }
+      :root{
+        --bg:#e9eef3;
+        --bg-soft:#dde6ee;
+        --surface:#ffffff;
+        --surface-2:#f0f4f7;
+        --ink:#122019;
+        --ink-2:#2e4238;
+        --muted:#5d6f66;
+        --line:#d3dee2;
+        --line-strong:#b9cbd2;
+        --accent:#0a6e4f;
+        --accent-deep:#075c42;
+        --accent-ink:#ffffff;
+        --accent-soft:#dff0e8;
+        --us:#1e4a7a;
+        --us-soft:#e0ebf7;
+        --id:#a4231f;
+        --id-soft:#fbe9e7;
+        --amber:#9a5b08;
+        --amber-soft:#fdf0d5;
+        --shadow:0 1px 2px rgba(18,32,25,.05),0 12px 30px rgba(18,32,25,.07);
+        --radius:16px;
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#0c1216;
+          --bg-soft:#101a20;
+          --surface:#16211c;
+          --surface-2:#1b2923;
+          --ink:#eaf2ed;
+          --ink-2:#cfe0d5;
+          --muted:#9db3a6;
+          --line:#26382e;
+          --line-strong:#385144;
+          --accent:#3ec48f;
+          --accent-deep:#2ea878;
+          --accent-ink:#07130e;
+          --accent-soft:#173528;
+          --us:#8db9e8;
+          --us-soft:#1a2f47;
+          --id:#f0a09c;
+          --id-soft:#3d201e;
+          --amber:#eec27a;
+          --amber-soft:#3a2c12;
+          --shadow:0 1px 2px rgba(0,0,0,.35),0 12px 30px rgba(0,0,0,.28);
+        }
+      }
+      html{scroll-behavior:smooth}
+      @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+      body{
+        margin:0;background:var(--bg);color:var(--ink);
+        font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+        font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;
+      }
+      a{color:var(--accent)}
+      .wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+      /* ---------- Hero ---------- */
+      .hero{
+        position:relative;overflow:hidden;color:#eef6f1;
+        background:radial-gradient(1100px 480px at 78% -10%,#14684c 0%,#0a4630 46%,#063626 100%);
+        border-radius:0 0 28px 28px;
+        padding:34px 0 40px;margin:0 -20px;
+      }
+      .hero-inner{max-width:1060px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+      .hero-viz{display:block;width:100%;height:auto;margin:2px 0 26px}
+      .hero-viz .grid-line{stroke:rgba(255,255,255,.13);stroke-width:1;stroke-dasharray:3 5}
+      .hero-viz .axis{stroke:rgba(255,255,255,.35);stroke-width:1}
+      .hero-viz .area{fill:rgba(94,234,178,.13)}
+      .hero-viz .curve{fill:none;stroke:#5eeab2;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+      .hero-viz .pt{fill:#063626;stroke:#5eeab2;stroke-width:2.5}
+      .hero-viz .pt-hot{fill:#ffb03a;stroke:#ffd9a0;stroke-width:2}
+      .hero-viz .tick{font:600 12.5px "Plus Jakarta Sans",sans-serif;fill:rgba(255,255,255,.62)}
+      .hero-viz .tag{font:800 12.5px "Plus Jakarta Sans",sans-serif;letter-spacing:.04em}
+      .hero-viz .tag-us{fill:#a9ccf5}
+      .hero-viz .tag-id{fill:#ffb4ae}
+      .hero-viz .tag-hot{fill:#ffcf87}
+      .date-pill{
+        display:inline-flex;align-items:center;gap:8px;
+        font-size:.86rem;font-weight:700;color:#eef6f1;
+        background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.34);
+        padding:8px 15px;border-radius:999px;margin:0 0 20px;
+      }
+      .date-pill .dot{width:8px;height:8px;border-radius:50%;background:#5eeab2;flex:none}
+      h1{
+        font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-weight:800;
+        font-size:clamp(2.15rem,6vw,3.6rem);line-height:1.08;letter-spacing:-.015em;
+        margin:0 0 14px;max-width:15em;color:#ffffff;
+      }
+      .lead{font-size:clamp(1rem,2.3vw,1.14rem);line-height:1.6;color:rgba(238,246,241,.86);max-width:42em;margin:0 0 28px}
+      .lead strong{color:#ffffff}
+      .hero-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:30px}
+      .btn{
+        display:inline-flex;align-items:center;gap:9px;text-decoration:none;
+        font-weight:700;font-size:.95rem;padding:11px 20px;border-radius:11px;border:1px solid transparent;
+      }
+      .btn-primary{background:#ffffff;color:#075c42}
+      .btn-primary svg{flex:none}
+      .btn-ghost{background:rgba(255,255,255,.1);color:#ffffff;border-color:rgba(255,255,255,.4)}
+      .btn:focus-visible,.chip:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+      .hero .btn:focus-visible{outline-color:#5eeab2}
+      .hero-facts{
+        display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0;
+      }
+      .hero-facts div{
+        background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.2);
+        border-radius:14px;padding:15px 17px;
+      }
+      .hero-facts b{display:block;font-size:1.3rem;font-weight:800;line-height:1.2;color:#ffffff}
+      .hero-facts span{font-size:.85rem;color:rgba(238,246,241,.78)}
+      @media (max-width:560px){ .hero-facts{grid-template-columns:1fr} .hero{padding-top:24px} }
+      /* ---------- Sections ---------- */
+      section{padding:46px 0 8px}
+      section#daftar-event{scroll-margin-top:10px}
+      h2{
+        font-family:"Source Serif 4",Georgia,serif;font-weight:700;
+        font-size:clamp(1.5rem,3.4vw,2rem);line-height:1.2;margin:0 0 10px;letter-spacing:-.01em;
+      }
+      .section-sub{color:var(--muted);margin:0 0 24px;max-width:46em;font-size:1rem}
+      /* ---------- Dompet ---------- */
+      .dompet{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+      @media (max-width:680px){ .dompet{grid-template-columns:1fr} }
+      .dompet-item{
+        background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+        padding:22px 22px 18px;box-shadow:var(--shadow);
+      }
+      .dompet-item .ic{
+        width:42px;height:42px;border-radius:11px;background:var(--accent-soft);color:var(--accent);
+        display:flex;align-items:center;justify-content:center;margin-bottom:12px;
+      }
+      .dompet-item h3{margin:0 0 6px;font-size:1.02rem;font-weight:800}
+      .dompet-item p{margin:0;color:var(--ink-2);font-size:.94rem}
+      /* ---------- Steps ---------- */
+      .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;counter-reset:step}
+      @media (max-width:760px){ .steps{grid-template-columns:1fr} }
+      .step{
+        background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+        padding:22px;box-shadow:var(--shadow);
+      }
+      .step .num{
+        width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--accent-ink);
+        display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;margin-bottom:12px;
+      }
+      .step h3{margin:0 0 6px;font-size:1rem;font-weight:800}
+      .step p{margin:0;color:var(--ink-2);font-size:.93rem}
+      .step code{
+        font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;
+        background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;
+      }
+      /* ---------- Filter ---------- */
+      .filterbar{
+        position:sticky;top:0;z-index:20;background:var(--bg);
+        padding:14px 0 12px;border-bottom:1px solid var(--line);margin-bottom:22px;
+      }
+      .searchrow{display:flex;gap:10px;margin-bottom:12px}
+      .searchrow input{
+        flex:1;min-width:0;font:inherit;font-size:.97rem;color:var(--ink);
+        background:var(--surface);border:1px solid var(--line-strong);border-radius:11px;padding:10px 14px;
+      }
+      .searchrow input::placeholder{color:var(--muted)}
+      .chips{display:flex;flex-wrap:wrap;gap:8px}
+      .chip{
+        font:inherit;font-size:.88rem;font-weight:700;cursor:pointer;
+        padding:9px 15px;border-radius:999px;border:1px solid var(--line-strong);
+        background:var(--surface);color:var(--ink-2);
+      }
+      .chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+      .count-line{font-size:.88rem;color:var(--muted);margin:0 0 14px}
+      /* ---------- Event cards ---------- */
+      .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+      @media (max-width:760px){ .grid{grid-template-columns:1fr} }
+      .card{
+        background:var(--surface);border:1px solid var(--line);border-radius:18px;
+        box-shadow:var(--shadow);padding:24px;display:flex;flex-direction:column;gap:0;
+      }
+      .card[hidden]{display:none}
+      .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:4px}
+      .abbr{
+        font-family:"Source Serif 4",Georgia,serif;font-size:1.7rem;font-weight:700;line-height:1.05;letter-spacing:-.01em;
+      }
+      .badges{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none}
+      .badge{
+        font-size:.72rem;font-weight:800;letter-spacing:.06em;padding:4px 9px;border-radius:6px;white-space:nowrap;
+      }
+      .badge-us{background:var(--us-soft);color:var(--us)}
+      .badge-id{background:var(--id-soft);color:var(--id)}
+      .impact{font-size:.78rem;font-weight:700;color:var(--amber);background:var(--amber-soft);padding:4px 9px;border-radius:6px;white-space:nowrap}
+      .impact.sedang{color:var(--muted);background:var(--surface-2)}
+      .fullname{font-weight:700;font-size:.98rem;margin:0 0 2px;color:var(--ink)}
+      .meta{font-size:.85rem;color:var(--muted);margin:0 0 14px}
+      .card h4{
+        font-size:.78rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
+        color:var(--accent);margin:16px 0 5px;
+      }
+      .card h4:first-of-type{margin-top:2px}
+      .card p.body{margin:0;font-size:.94rem;color:var(--ink-2)}
+      .moves{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+      .move{
+        font-size:.8rem;font-weight:600;background:var(--surface-2);border:1px solid var(--line);
+        border-radius:999px;padding:4px 10px;color:var(--ink-2);
+      }
+      details{margin-top:16px;border-top:1px dashed var(--line-strong);padding-top:6px}
+      summary{
+        cursor:pointer;font-weight:700;font-size:.92rem;color:var(--accent);
+        padding:8px 0;list-style:none;display:flex;align-items:center;gap:8px;min-height:2.75rem;
+      }
+      summary::-webkit-details-marker{display:none}
+      summary .chev{transition:transform .18s ease;flex:none}
+      details[open ] summary .chev{transform:rotate(180deg)}
+      .scenario{display:grid;gap:10px;padding:4px 0 8px}
+      .scenario div{background:var(--surface-2);border-radius:11px;padding:12px 14px}
+      .scenario b{display:block;font-size:.86rem;margin-bottom:3px}
+      .scenario p{margin:0;font-size:.9rem;color:var(--ink-2)}
+      .empty{
+        border:1px dashed var(--line-strong);border-radius:var(--radius);padding:28px 20px;
+        text-align:center;color:var(--muted);background:var(--surface);
+      }
+      .empty[hidden]{display:none}
+      /* ---------- Glossary ---------- */
+      .gloss{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+      @media (max-width:680px){ .gloss{grid-template-columns:1fr} }
+      .gloss div{background:var(--surface);padding:16px 18px}
+      .gloss dt{font-weight:800;font-size:.95rem;margin-bottom:3px}
+      .gloss dd{margin:0;font-size:.9rem;color:var(--ink-2)}
+      /* ---------- Footer ---------- */
+      footer{padding:44px 0 56px;margin-top:40px;border-top:1px solid var(--line)}
+      .disclaimer{
+        background:var(--amber-soft);border-radius:var(--radius);padding:18px 20px;
+        font-size:.92rem;color:var(--ink-2);margin-bottom:22px;
+      }
+      .disclaimer b{color:var(--ink)}
+      footer p{font-size:.88rem;color:var(--muted);margin:0 0 8px;max-width:52em}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <!-- ================= HERO ================= -->
+      <header class="hero">
+        <div class="hero-inner">
+          <svg class="hero-viz" viewBox="0 0 1060 252" role="img" aria-label="Ilustrasi grafik pasar yang bergerak naik-turun mengikuti rilis sembilan event makro: FOMC, CPI, PPI, PCE, NFP, GDP AS, BI Rate, Inflasi BPS, dan GDP Indonesia.">
+            <line class="grid-line" x1="30" y1="52" x2="1030" y2="52"/>
+            <line class="grid-line" x1="30" y1="104" x2="1030" y2="104"/>
+            <line class="grid-line" x1="30" y1="156" x2="1030" y2="156"/>
+            <path class="area" d="M40,168 L140,138 L240,158 L340,102 L440,126 L540,84 L640,112 L740,66 L840,92 L940,58 L1020,74 L1020,208 L40,208 Z"/>
+            <path class="curve" d="M40,168 L140,138 L240,158 L340,102 L440,126 L540,84 L640,112 L740,66 L840,92 L940,58 L1020,74"/>
+            <circle class="pt" cx="40" cy="168" r="5.5"/>
+            <circle class="pt" cx="140" cy="138" r="5.5"/>
+            <circle class="pt" cx="240" cy="158" r="5.5"/>
+            <circle class="pt pt-hot" cx="340" cy="102" r="6.5"/>
+            <circle class="pt" cx="440" cy="126" r="5.5"/>
+            <circle class="pt" cx="540" cy="84" r="5.5"/>
+            <circle class="pt" cx="640" cy="112" r="5.5"/>
+            <circle class="pt pt-hot" cx="740" cy="66" r="6.5"/>
+            <circle class="pt" cx="840" cy="92" r="5.5"/>
+            <circle class="pt" cx="940" cy="58" r="5.5"/>
+            <text class="tag tag-us" x="40" y="196" text-anchor="middle">FOMC</text>
+            <text class="tag tag-us" x="140" y="120" text-anchor="middle">CPI</text>
+            <text class="tag tag-us" x="240" y="186" text-anchor="middle">PPI</text>
+            <text class="tag tag-hot" x="340" y="82" text-anchor="middle">PCE</text>
+            <text class="tag tag-us" x="440" y="152" text-anchor="middle">NFP</text>
+            <text class="tag tag-us" x="540" y="64" text-anchor="middle">GDP AS</text>
+            <text class="tag tag-id" x="640" y="138" text-anchor="middle">BI RATE</text>
+            <text class="tag tag-hot" x="740" y="46" text-anchor="middle">INFLASI BPS</text>
+            <text class="tag tag-id" x="840" y="120" text-anchor="middle">GDP RI</text>
+            <text class="tag tag-us" x="940" y="38" text-anchor="middle">RILIS BERIKUTNYA</text>
+            <line class="axis" x1="30" y1="208" x2="1030" y2="208"/>
+            <text class="tick" x="40" y="234" text-anchor="middle">JAN</text>
+            <text class="tick" x="240" y="234" text-anchor="middle">MAR</text>
+            <text class="tick" x="440" y="234" text-anchor="middle">MEI</text>
+            <text class="tick" x="640" y="234" text-anchor="middle">JUL</text>
+            <text class="tick" x="840" y="234" text-anchor="middle">SEP</text>
+            <text class="tick" x="1010" y="234" text-anchor="middle">NOV</text>
+          </svg>
+          <p class="date-pill"><span class="dot"></span> Senin, 23 November 2026</p>
+          <h1>9 event makro yang menggerakkan pasar</h1>
+          <p class="lead">
+            Setiap bulan ada pengumuman angka-angka dari Amerika Serikat dan Indonesia — inflasi, suku bunga,
+            lapangan kerja, pertumbuhan ekonomi. Kedengarannya jauh, padahal ujung-ujungnya terasa di
+            <strong>harga barang, nilai rupiah, cicilan, dan harga saham serta kripto</strong>.
+            Halaman ini menjelaskannya satu per satu, dengan bahasa sehari-hari.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://vibecodingtry.github.io/" target="_blank" rel="noopener">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Lihat jadwal rilisnya
+            </a>
+            <a class="btn btn-ghost" href="#daftar-event">Mulai dari daftar event</a>
+          </div>
+          <div class="hero-facts" role="list">
+            <div role="listitem"><b>9 event</b><span>yang paling berpengaruh, dari dua negara</span></div>
+            <div role="listitem"><b>±5 menit</b><span>waktu baca per event, bisa loncat-loncat</span></div>
+            <div role="listitem"><b>Semua dalam WIB</b><span>jadwal rilis mengacu ke kalender pendamping</span></div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ================= DOMPET ================= -->
+      <section aria-labelledby="judul-dompet">
+        <h2 id="judul-dompet">Jalur pengaruhnya ke dompet kita</h2>
+        <p class="section-sub">Angka di berita tidak langsung menyentuh kita. Ia bergerak lewat empat jalur ini — pahami jalurnya, dan berita ekonomi jadi jauh lebih masuk akal.</p>
+        <div class="dompet">
+          <div class="dompet-item">
+            <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></div>
+            <h3>Cicilan &amp; bunga pinjaman</h3>
+            <p>Suku bunga bank sentral adalah “harga uang”. Kalau naik, bunga KPR, kredit kendaraan, dan pinjaman usaha biasanya ikut naik beberapa bulan setelahnya. Kalau turun, cicilan berpeluang lebih ringan.</p>
+          </div>
+          <div class="dompet-item">
+            <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>
+            <h3>Harga barang sehari-hari</h3>
+            <p>Inflasi mengukur seberapa cepat harga-harga naik. Inflasi yang tinggi dan lama berarti uang yang sama membeli lebih sedikit — dari beras, BBM, sampai ongkos kirim.</p>
+          </div>
+          <div class="dompet-item">
+            <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+            <h3>Rupiah &amp; barang impor</h3>
+            <p>Keputusan suku bunga di AS bisa menguatkan atau melemahkan dolar. Rupiah yang melemah membuat barang impor — gawai, komponen elektronik, bahan baku — cenderung lebih mahal.</p>
+          </div>
+          <div class="dompet-item">
+            <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1V8"/></svg></div>
+            <h3>Tabungan, saham &amp; kripto</h3>
+            <p>Saat suku bunga naik, deposito dan obligasi jadi lebih menarik, sementara aset berisiko seperti saham dan kripto sering tertekan. Saat suku bunga turun, arahnya kerap berbalik.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CARA BACA ================= -->
+      <section aria-labelledby="judul-cara">
+        <h2 id="judul-cara">Cara membaca satu rilis dalam 60 detik</h2>
+        <p class="section-sub">Pasar jarang bereaksi pada angkanya saja. Yang dibandingkan selalu tiga hal ini.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="num">1</div>
+            <h3>Bandingkan dengan perkiraan</h3>
+            <p>Di kalender ekonomi selalu ada kolom <code>perkiraan</code> (perkiraan para analis) dan <code>aktual</code> (angka resmi). Selisih keduanya yang menggerakkan pasar, bukan besar angkanya semata.</p>
+          </div>
+          <div class="step">
+            <div class="num">2</div>
+            <h3>Tanya: ini mengubah arah suku bunga?</h3>
+            <p>Hampir semua reaksi pasar bermuara ke satu pertanyaan: apakah angka ini membuat bank sentral lebih mungkin menaikkan, menahan, atau menurunkan suku bunga?</p>
+          </div>
+          <div class="step">
+            <div class="num">3</div>
+            <h3>Jangan putuskan apa pun di menit pertama</h3>
+            <p>Harga sering melonjak lalu berbalik dalam hitungan menit setelah rilis. Tunggu arahnya jelas, dan ingat satu angka tidak mengubah gambaran besar sendirian.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= DAFTAR EVENT ================= -->
+      <section id="daftar-event" aria-labelledby="judul-event">
+        <h2 id="judul-event">Daftar event, satu per satu</h2>
+        <p class="section-sub">Saring menurut negara atau cari dengan kata kunci. Ketuk “Kalau angkanya meleset…” di tiap kartu untuk melihat skenario reaksi yang lazim terjadi — pola umum, bukan kepastian.</p>
+
+        <div class="filterbar">
+          <div class="searchrow">
+            <input type="search" id="cari" placeholder="Cari event… misalnya: inflasi, bunga, kerja" aria-label="Cari event" />
+          </div>
+          <div class="chips" role="group" aria-label="Saring event">
+            <button type="button" class="chip" data-filter="semua" aria-pressed="true">Semua</button>
+            <button type="button" class="chip" data-filter="as" aria-pressed="false">Amerika Serikat</button>
+            <button type="button" class="chip" data-filter="id" aria-pressed="false">Indonesia</button>
+            <button type="button" class="chip" data-filter="bunga" aria-pressed="false">Suku bunga</button>
+            <button type="button" class="chip" data-filter="inflasi" aria-pressed="false">Inflasi</button>
+            <button type="button" class="chip" data-filter="kerja" aria-pressed="false">Tenaga kerja</button>
+            <button type="button" class="chip" data-filter="tumbuh" aria-pressed="false">Pertumbuhan</button>
+          </div>
+        </div>
+
+        <p class="count-line" id="count-line" aria-live="polite"></p>
+
+        <div class="grid" id="grid">
+
+          <!-- FOMC -->
+          <article class="card" data-country="as" data-cat="bunga" data-text="fomc suku bunga the fed federal reserve amerika keputusan bunga dolar rapat">
+            <div class="card-top">
+              <div class="abbr">FOMC</div>
+              <div class="badges"><span class="badge badge-us">AMERIKA SERIKAT</span><span class="impact">Dampak tinggi</span></div>
+            </div>
+            <p class="fullname">Keputusan Suku Bunga The Fed</p>
+            <p class="meta">Dirilis oleh Federal Reserve (bank sentral AS) · 8 kali setahun · biasanya pukul 01.00–02.00 WIB</p>
+            <h4>Apa itu</h4>
+            <p class="body">FOMC adalah komite di bank sentral AS yang memutuskan suku bunga acuan dolar. Bayangkan ini tombol utama “harga uang” untuk seluruh dunia, karena dolar dipakai di mana-mana.</p>
+            <h4>Kenapa penting buat kita</h4>
+            <p class="body">Kalau bunga dolar naik, investor global cenderung memarkir uang di AS. Rupiah bisa tertekan, dan Bank Indonesia bisa ikut terdorong menahan atau menaikkan bunga — yang akhirnya terasa ke cicilan dan harga barang impor.</p>
+            <h4>Yang biasanya bergerak</h4>
+            <div class="moves"><span class="move">Rupiah</span><span class="move">IHSG</span><span class="move">Emas</span><span class="move">Bitcoin &amp; kripto</span><span class="move">Saham AS</span></div>
+            <details>
+              <summary>Kalau keputusannya meleset dari perkiraan <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+              <div class="scenario">
+                <div><b>Bunga ditahan/dinaikkan lebih lama dari dugaan (hawkish)</b><p>Dolar cenderung menguat, rupiah dan aset berisiko seperti saham dan kripto lazimnya tertekan.</p></div>
+                <div><b>Ada sinyal pemangkasan bunga (dovish)</b><p>Dolar cenderung melemah, rupiah berpeluang menguat, saham dan kripto lazimnya menyambut positif.</p></div>
+              </div>
+            </details>
+          </article>
+
+          <!-- CPI AS -->
+          <article class="card" data-country="as" data-cat="inflasi" data-text="cpi consumer price index inflasi amerika harga konsumen bls belanja">
+            <div class="card-top">
+              <div class="abbr">CPI AS</div>
+              <div class="badges"><span class="badge badge-us">AMERIKA SERIKAT</span><span class="impact">Dampak tinggi</span></div>
+            </div>
+            <p class="fullname">Consumer Price Index — Inflasi Konsumen AS</p>
+            <p class="meta">Dirilis oleh Bureau of Labor Statistics (BLS) · tiap bulan · biasanya pukul 19.30–20.30 WIB</p>
+            <h4>Apa itu</h4>
+            <p class="body">Indeks yang mengukur perubahan harga keranjang barang dan jasa yang dibeli rumah tangga Amerika — makanan, sewa tempat tinggal, bensin, dan lainnya. Inilah angka “inflasi AS” yang paling sering dikutip berita.</p>
+            <h4>Kenapa penting buat kita</h4>
+            <p class="body">The Fed menjaga inflasi di sekitar 2%. Inflasi yang membandel membuat The Fed enggan menurunkan bunga, dan efek rantainya sampai ke rupiah dan pasar kita seperti dijelaskan di kartu FOMC.</p>
+            <h4>Yang biasanya bergerak</h4>
+            <div class="moves"><span class="move">Rupiah</span><span class="move">Emas</span><span class="move">Bitcoin &amp; kripto</span><span class="move">Saham AS</span></div>
+            <details>
+              <summary>Kalau angkanya meleset dari perkiraan <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+              <div class="scenario">
+                <div><b>Inflasi lebih tinggi dari perkiraan</b><p>Pasar membaca The Fed akan menahan bunga tinggi lebih lama. Dolar cenderung menguat; saham dan kripto lazimnya melemah sesaat.</p></div>
+                <div><b>Inflasi lebih rendah dari perkiraan</b><p>Peluang pemangkasan bunga dinilai membesar. Dolar cenderung melemah; aset berisiko lazimnya menguat.</p></div>
+              </div>
+            </details>
+          </article>
+
+          <!-- PPI AS -->
+          <article class="card" data-country="as" data-cat="inflasi" data-text="ppi producer price index inflasi produsen amerika harga pabrik grosir bls">
+            <div class="card-top">
+              <div class="abbr">PPI AS</div>
+              <div class="badges"><span class="badge badge-us">AMERIKA SERIKAT</span><span class="impact sedang">Dampak sedang</span></div>
+            </div>
+            <p class="fullname">Producer Price Index — Inflasi Produsen AS</p>
+            <p class="meta">Dirilis oleh Bureau of Labor Statistics (BLS) · tiap bulan · biasanya sehari di sekitar rilis CPI</p>
+            <h4>Apa itu</h4>
+            <p class="body">Kembaran CPI, tapi diukur di gerbang pabrik: harga yang diterima produsen untuk barang dan jasanya, sebelum sampai ke toko dan konsumen.</p>
+            <h4>Kenapa penting buat kita</h4>
+            <p class="body">Biaya produsen yang naik biasanya diteruskan ke harga jual beberapa bulan kemudian. Karena itu PPI sering dibaca sebagai petunjuk awal arah CPI — dan arah inflasi berarti arah suku bunga.</p>
+            <h4>Yang biasanya bergerak</h4>
+            <div class="moves"><span class="move">Dolar AS</span><span class="move">Saham AS</span><span class="move">Emas</span></div>
+            <details>
+              <summary>Kalau angkanya meleset dari perkiraan <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+              <div class="scenario">
+                <div><b>PPI lebih tinggi dari perkiraan</b><p>Sinyal tekanan harga masih ada di hulu. Pasar sedikit lebih waspada soal inflasi dan suku bunga.</p></div>
+                <div><b>PPI lebih rendah dari perkiraan</b><p>Tekanan harga di hulu mereda — kabar baik untuk harapan inflasi yang lebih jinak ke depan.</p></div>
+              </div>
+            </details>
+          </article>
+
+          <!-- PCE AS -->
+          <article class="card" data-country="as" data-cat="inflasi" data-text="pce personal consumption expenditures inflasi amerika belanja konsumen bea favorit the fed">
+            <div class="card-top">
+              <div class="abbr">PCE AS</div>
+              <div class="badges"><span class="badge badge-us">AMERIKA SERIKAT</span><span class="impact">Dampak tinggi</span></div>
+            </div>
+            <p class="fullname">Personal Consumption Expenditures — Inflasi Belanja AS</p>
+            <p class="meta">Dirilis oleh Bureau of Economic Analysis (BEA) · tiap bulan · biasanya pukul 19.30–20.30 WIB</p>
+            <h4>Apa itu</h4>
+            <p class="body">Ukuran inflasi lain dari sisi belanja warga Amerika. Bedanya dengan CPI: inilah angka yang secara resmi paling diperhatikan The Fed saat memutuskan suku bunga, terutama versi “inti” yang mengeluarkan makanan dan energi.</p>
+            <h4>Kenapa penting buat kita</h4>
+            <p class="body">Karena The Fed sendiri yang menatap angka ini, reaksi pasar bisa sebesar reaksi terhadap CPI — terutama bila hasilnya mengubah perkiraan waktu pemangkasan atau kenaikan bunga.</p>
+            <h4>Yang biasanya bergerak</h4>
+            <div class="moves"><span class="move">Rupiah</span><span class="move">Emas</span><span class="move">Bitcoin &amp; kripto</span><span class="move">Saham AS</span></div>
+            <details>
+              <summary>Kalau angkanya meleset dari perkiraan <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+              <div class="scenario">
+                <div><b>PCE inti lebih tinggi dari perkiraan</b><p>Inflasi dianggap lengket. Harapan pemangkasan bunga mundur; dolar cenderung menguat.</p></div>
+                <div><b>PCE inti lebih rendah dari perkiraan</b><p>Jalan menuju target inflasi 2% terlihat lebih mulus; harapan bunga turun menguat.</p></div>
+              </div>
+            </details>
+          </article>
+
+          <!-- NFP -->
+          <article class="card" data-country="as" data-cat="kerja" data-text="nfp nonfarm payrolls lapangan kerja amerika pekerjaan pengangguran bls gaji">
+            <div class="card-top">
+              <div class="abbr">NFP</div>
+              <div class="badges"><span class="badge badge-us">AMERIKA SERIKAT</span><span class="impact">Dampak tinggi</span></div>
+            </div>
+            <p class="fullname">Non-Farm Payrolls — Data Lapangan Kerja AS</p>
+            <p class="meta">Dirilis oleh Bureau of Labor Statistics (BLS) · Jumat pertama tiap bulan · biasanya pukul 19.30–20.30 WIB</p>
+            <h4>Apa itu</h4>
+            <p class="body">Jumlah pekerjaan baru yang tercipta di AS dalam sebulan, di luar sektor pertanian. Dirilis bersamaan dengan tingkat pengangguran dan pertumbuhan upah, jadi ini paket data tenaga kerja terlengkap.</p>
+            <h4>Kenapa penting buat kita</h4>
+            <p class="body">Selain inflasi, mandat The Fed adalah menjaga lapangan kerja. Pasar kerja yang terlalu panas bisa menahan bunga tetap tinggi; pasar kerja yang melemah cepat bisa memaksa bunga turun — dan kabar resesi ikut terbawa.</p>
+            <h4>Yang biasanya bergerak</h4>
+            <div class="moves"><span class="move">Rupiah</span><span class="move">Saham AS</span><span class="move">Emas</span><span class="move">Bitcoin &amp; kripto</span></div>
+            <details>
+              <summary>Kalau angkanya meleset dari perkiraan <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+              <div class="scenario">
+                <div><b>Pekerjaan jauh lebih banyak dari perkiraan</b><p>Ekonomi AS dinilai kuat. Sisi baiknya: kecil kemungkinan resesi. Sisi lainnya: bunga bisa tinggi lebih lama.</p></div>
+                <div><b>Pekerjaan jauh lebih sedikit dari perkiraan</b><p>Kekhawatiran ekonomi melambat naik. Pasar menimbang antara harapan bunga turun dan takut resesi — reaksi awal sering bergejolak.</p></div>
+              </div>
+            </details>
+          </article>
+
+          <!-- GDP AS -->
+          <article class="card" data-country="as" data-cat="tumbuh" data-text="gdp pdb pertumbuhan ekonomi amerika produk domestik bruto bea kuartal resesi">
+            <div class="card-top">
+              <div class="abbr">GDP AS</div>
+              <div class="badges"><span class="badge badge-us">AMERIKA SERIKAT</span><span class="impact sedang">Dampak sedang–tinggi</span></div>
+            </div>
+            <p class="fullname">Gross Domestic Product — Pertumbuhan Ekonomi AS</p>
+            <p class="meta">Dirilis oleh Bureau of Economic Analysis (BEA) · tiap kuartal, dalam 3 tahap (perkiraan awal, revisi, final)</p>
+            <h4>Apa itu</h4>
+            <p class="body">Nilai total semua barang dan jasa yang dihasilkan ekonomi Amerika dalam satu kuartal — rapor besar kesehatan ekonomi negara tersebut. Dua kuartal berturut-turut menyusut lazim disebut resesi teknis.</p>
+            <h4>Kenapa penting buat kita</h4>
+            <p class="body">AS adalah ekonomi terbesar di dunia dan pembeli besar produk ekspor banyak negara. Ekonomi AS yang melambat biasanya ikut menyeret permintaan global, harga komoditas, dan selera investor terhadap pasar negara berkembang seperti Indonesia.</p>
+            <h4>Yang biasanya bergerak</h4>
+            <div class="moves"><span class="move">Saham AS</span><span class="move">IHSG</span><span class="move">Harga komoditas</span><span class="move">Rupiah</span></div>
+            <details>
+              <summary>Kalau angkanya meleset dari perkiraan <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+              <div class="scenario">
+                <div><b>Pertumbuhan lebih kuat dari perkiraan</b><p>Ketahanan ekonomi terkonfirmasi. Saham lazimnya disambut positif, meski bunga bisa bertahan tinggi.</p></div>
+                <div><b>Pertumbuhan lebih lemah, apalagi negatif</b><p>Kata “resesi” mulai ramai dibicarakan. Investor cenderung menghindar dari aset berisiko untuk sementara.</p></div>
+              </div>
+            </details>
+          </article>
+
+          <!-- BI Rate -->
+          <article class="card" data-country="id" data-cat="bunga" data-text="bi rate suku bunga bank indonesia rdg acuan kredit kpr deposito rupiah">
+            <div class="card-top">
+              <div class="abbr">BI Rate</div>
+              <div class="badges"><span class="badge badge-id">INDONESIA</span><span class="impact">Dampak tinggi</span></div>
+            </div>
+            <p class="fullname">Keputusan Suku Bunga Bank Indonesia</p>
+            <p class="meta">Dirilis oleh Bank Indonesia lewat Rapat Dewan Gubernur (RDG) · tiap bulan · biasanya siang–sore WIB</p>
+            <h4>Apa itu</h4>
+            <p class="body">Suku bunga acuan Indonesia — saat ini bernama BI-Rate. Ini padanan FOMC-nya Indonesia: tombol utama harga uang rupiah, yang menjadi rujukan bunga deposito dan kredit di bank-bank.</p>
+            <h4>Kenapa penting buat kita</h4>
+            <p class="body">Dari semua event di halaman ini, inilah yang paling langsung terasa. BI Rate naik berarti bunga kredit dan KPR berpeluang ikut naik, sementara bunga deposito jadi lebih menarik. BI Rate juga dijaga untuk mempertahankan daya tarik rupiah di mata investor asing.</p>
+            <h4>Yang biasanya bergerak</h4>
+            <div class="moves"><span class="move">Rupiah</span><span class="move">IHSG</span><span class="move">Bunga KPR &amp; kredit</span><span class="move">Bunga deposito</span><span class="move">Obligasi pemerintah</span></div>
+            <details>
+              <summary>Kalau keputusannya meleset dari perkiraan <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+              <div class="scenario">
+                <div><b>BI menaikkan bunga di luar dugaan</b><p>Rupiah cenderung terbantu menguat dan deposito makin menarik, tapi beban cicilan berpeluang naik dan saham perbankan/properti bisa tertekan.</p></div>
+                <div><b>BI menurunkan bunga</b><p>Kredit berpeluang lebih murah dan saham lazimnya menyambut baik, selama rupiah tetap stabil dan inflasi terkendali.</p></div>
+              </div>
+            </details>
+          </article>
+
+          <!-- Inflasi BPS -->
+          <article class="card" data-country="id" data-cat="inflasi" data-text="inflasi bps indonesia ihk harga konsumen beras pangan daya beli">
+            <div class="card-top">
+              <div class="abbr">Inflasi BPS</div>
+              <div class="badges"><span class="badge badge-id">INDONESIA</span><span class="impact sedang">Dampak sedang–tinggi</span></div>
+            </div>
+            <p class="fullname">Inflasi Indonesia — Indeks Harga Konsumen</p>
+            <p class="meta">Dirilis oleh Badan Pusat Statistik (BPS) · awal tiap bulan · biasanya pukul 11.00 WIB</p>
+            <h4>Apa itu</h4>
+            <p class="body">Versi Indonesianya CPI: perubahan harga barang dan jasa yang dikonsumsi rumah tangga di kota-kota survei BPS, dari kelompok makanan, minuman, dan tembakau sampai transportasi dan perumahan.</p>
+            <h4>Kenapa penting buat kita</h4>
+            <p class="body">Ini angka yang paling dekat dengan pengalaman belanja kita sendiri. Bank Indonesia menargetkan inflasi di kisaran 2,5% ±1%. Inflasi yang melonjak di atas sasaran bisa mendorong BI menaikkan bunga; inflasi yang terlalu rendah bisa menandakan daya beli sedang lesu.</p>
+            <h4>Yang biasanya bergerak</h4>
+            <div class="moves"><span class="move">Rupiah</span><span class="move">IHSG</span><span class="move">Ekspektasi BI Rate</span><span class="move">Harga obligasi</span></div>
+            <details>
+              <summary>Kalau angkanya meleset dari perkiraan <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+              <div class="scenario">
+                <div><b>Inflasi lebih tinggi dari perkiraan</b><p>Perhatian tertuju ke pemicunya — sering kali pangan atau harga yang diatur pemerintah. Peluang BI menahan/menaikkan bunga dinilai membesar.</p></div>
+                <div><b>Inflasi lebih rendah dari perkiraan</b><p>Ruang BI untuk menurunkan bunga dinilai lebih terbuka, asalkan bukan karena daya beli yang melemah tajam.</p></div>
+              </div>
+            </details>
+          </article>
+
+          <!-- GDP Indonesia -->
+          <article class="card" data-country="id" data-cat="tumbuh" data-text="gdp pdb pertumbuhan ekonomi indonesia bps kuartal konsumsi investasi ekspor">
+            <div class="card-top">
+              <div class="abbr">GDP Indonesia</div>
+              <div class="badges"><span class="badge badge-id">INDONESIA</span><span class="impact sedang">Dampak sedang</span></div>
+            </div>
+            <p class="fullname">Pertumbuhan Ekonomi Indonesia (PDB)</p>
+            <p class="meta">Dirilis oleh Badan Pusat Statistik (BPS) · tiap kuartal · biasanya pukul 11.00 WIB</p>
+            <h4>Apa itu</h4>
+            <p class="body">Rapor pertumbuhan ekonomi Indonesia per kuartal, dihitung dari Produk Domestik Bruto (PDB). Komponen terbesarnya adalah konsumsi rumah tangga — belanja kita semua — disusul investasi, belanja pemerintah, dan ekspor-impor.</p>
+            <h4>Kenapa penting buat kita</h4>
+            <p class="body">Pertumbuhan di kisaran 5% selama ini dianggap sehat untuk Indonesia: cukup kencang untuk membuka lapangan kerja, tanpa memicu inflasi berlebih. Angka jauh di bawah itu biasanya berarti perusahaan menahan ekspansi dan rekrutmen.</p>
+            <h4>Yang biasanya bergerak</h4>
+            <div class="moves"><span class="move">IHSG</span><span class="move">Rupiah</span><span class="move">Saham sektor konsumsi &amp; perbankan</span></div>
+            <details>
+              <summary>Kalau angkanya meleset dari perkiraan <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></summary>
+              <div class="scenario">
+                <div><b>Pertumbuhan lebih tinggi dari perkiraan</b><p>Sinyal daya beli dan kegiatan usaha lebih kuat dari dugaan. Sentimen terhadap saham Indonesia lazimnya membaik.</p></div>
+                <div><b>Pertumbuhan lebih rendah dari perkiraan</b><p>Pasar memeriksa komponen mana yang melemah — konsumsi, investasi, atau ekspor — karena obatnya berbeda-beda.</p></div>
+              </div>
+            </details>
+          </article>
+
+        </div>
+
+        <div class="empty" id="empty" hidden>
+          <p style="margin:0 0 6px"><strong>Tidak ada event yang cocok.</strong></p>
+          <p style="margin:0">Coba kata kunci lain, atau ketuk “Semua” untuk menampilkan kembali 9 event-nya.</p>
+        </div>
+      </section>
+
+      <!-- ================= GLOSARIUM ================= -->
+      <section aria-labelledby="judul-glosarium">
+        <h2 id="judul-glosarium">Istilah yang akan sering kamu temui</h2>
+        <p class="section-sub">Enam istilah ini muncul di hampir setiap berita rilis data. Hafalkan ini saja, sisanya akan jauh lebih mudah diikuti.</p>
+        <dl class="gloss">
+          <div><dt>Perkiraan (forecast / konsensus)</dt><dd>Angka tebakan kolektif para analis sebelum data resmi keluar. Pasar membandingkan angka aktual dengan angka ini.</dd></div>
+          <div><dt>Aktual</dt><dd>Angka resmi yang dirilis lembaga statistik atau bank sentral. Selisih aktual vs perkiraan-lah yang memicu reaksi harga.</dd></div>
+          <div><dt>Basis poin (bps)</dt><dd>Satuan kecil untuk suku bunga. 1 basis poin = 0,01%. Kenaikan bunga 0,25% disebut kenaikan 25 basis poin.</dd></div>
+          <div><dt>Hawkish vs dovish</dt><dd>Hawkish = bank sentral bernada tegas melawan inflasi, condong menahan/menaikkan bunga. Dovish = bernada longgar, condong menurunkan bunga.</dd></div>
+          <div><dt>YoY dan MoM</dt><dd>YoY (year-on-year) membandingkan dengan bulan/kuartal yang sama tahun lalu. MoM (month-on-month) membandingkan dengan bulan sebelumnya.</dd></div>
+          <div><dt>Revisi</dt><dd>Angka bulan lalu yang diperbarui karena data lebih lengkap. Kadang revisi besar justru lebih menggerakkan pasar daripada angka barunya.</dd></div>
+        </dl>
+      </section>
+
+      <!-- ================= FOOTER ================= -->
+      <footer>
+        <div class="disclaimer">
+          <b>Catatan penting:</b> halaman ini bahan belajar, bukan saran investasi atau keuangan.
+          Pola reaksi yang ditulis adalah kecenderungan yang lazim terjadi — pasar bisa bergerak
+          berlawanan kapan saja, terutama bila ada berita besar lain di saat yang bersamaan.
+          Untuk keputusan uang yang nyata, pertimbangkan kondisi keuanganmu sendiri.
+        </div>
+        <p>Sumber data resmi tiap event: Federal Reserve dan Bureau of Labor Statistics serta Bureau of Economic Analysis (Amerika Serikat); Bank Indonesia dan Badan Pusat Statistik (Indonesia). Jadwal rilis berikutnya dalam WIB bisa dilihat di <a href="https://vibecodingtry.github.io/" target="_blank" rel="noopener">Kalender Hari Penting</a>.</p>
+        <p>Dibuat sebagai bacaan pendamping kalender tersebut — satu halaman menjelaskan jadwalnya, halaman ini menjelaskan artinya.</p>
+      </footer>
+
+    </div>
+
+    <script>
+      (function () {
+        var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
+        var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+        var input = document.getElementById('cari');
+        var empty = document.getElementById('empty');
+        var countLine = document.getElementById('count-line');
+        var active = 'semua';
+
+        function apply() {
+          var q = (input.value || '').trim().toLowerCase();
+          var shown = 0;
+          cards.forEach(function (card) {
+            var matchFilter =
+              active === 'semua' ||
+              card.getAttribute('data-country') === active ||
+              card.getAttribute('data-cat') === active;
+            var hay = (card.textContent + ' ' + (card.getAttribute('data-text') || '')).toLowerCase();
+            var matchSearch = !q || hay.indexOf(q) !== -1;
+            var visible = matchFilter && matchSearch;
+            card.hidden = !visible;
+            if (visible) shown++;
+          });
+          empty.hidden = shown !== 0;
+          countLine.textContent = shown === cards.length
+            ? 'Menampilkan semua ' + cards.length + ' event.'
+            : 'Menampilkan ' + shown + ' dari ' + cards.length + ' event.';
+        }
+
+        chips.forEach(function (chip) {
+          chip.addEventListener('click', function () {
+            chips.forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+            chip.setAttribute('aria-pressed', 'true');
+            active = chip.getAttribute('data-filter');
+            apply();
+          });
+        });
+        input.addEventListener('input', apply);
+        apply();
+      })();
+    </script>
+  </body>
+</html>
